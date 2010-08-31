@@ -198,7 +198,8 @@ class Doctrine_Template_Sortable extends Doctrine_Template
                               ->update(get_class($object))
                               ->set($this->_options['name'], $this->_options['name'] . ' - 1')
                               ->where($this->_options['name'] . ' > ?', $position)
-                              ->andWhere($this->_options['name'] . ' <= ?', $newPosition);
+                              ->andWhere($this->_options['name'] . ' <= ?', $newPosition)
+                              ->orderBy($this->_options['name'] . ' ASC');
 
       foreach($this->_options['uniqueBy'] as $field)
       {
@@ -345,7 +346,7 @@ class Doctrine_Template_Sortable extends Doctrine_Template
   /**
    * Get the final position of a model
    *
-   * @return $position
+   * @return int $position
    */
   public function getFinalPosition()
   {
@@ -370,6 +371,6 @@ class Doctrine_Template_Sortable extends Doctrine_Template
    $last = $q->limit(1)->fetchOne();
    $finalPosition = $last ? $last->get($this->_options['name']) : 0;
 
-   return $finalPosition;
+   return (int)$finalPosition;
   }
 }
